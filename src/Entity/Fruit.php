@@ -32,6 +32,9 @@ class Fruit
     #[ORM\Column]
     private array $nutritions = [];
 
+	#[ORM\Column]
+	private bool $is_favorite = false;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_date = null;
 
@@ -100,7 +103,18 @@ class Fruit
         return $this;
     }
 
-    public function getNutritions(): array
+    public function getIsFavorite(): bool
+    {
+        return $this->is_favorite;
+    }
+
+    public function setIsFavorite($is_favorite): self
+    {
+        $this->is_favorite = $is_favorite;
+
+        return $this;
+    }
+	public function getNutritions(): array
     {
         return $this->nutritions;
     }

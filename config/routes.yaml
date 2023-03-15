@@ -1,3 +1,13 @@
 index:
     path: /main
     controller: App\Controller\MainController::index
+fruits:
+    path: /fruits
+    controller: App\Controller\FruitController::index
+add_favorite:
+    path: /add-favorite
+    controller: App\Controller\FruitController::addToFavorite
+    methods: [POST]
+get_favorites:
+        path: /favorites
+        controller: App\Controller\FruitController::getFavorites

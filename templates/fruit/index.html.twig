@@ -1,20 +1,149 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FruitController!{% endblock %}
 
 {% block body %}
+    {% block stylesheets %}    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"/>{% endblock %}
+
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .pagination {
+        display: inline-block!important;
+
+    }
+
+    .pagination span {
+
+        float: left;
+        padding: 8px 16px;
+
+
+    }
+    .pagination span  a{
+        color: black;
+        padding: 8px 16px;
+        text-decoration: none;
+
+    }
+
+    .pagination span.current {
+        background-color: grey;
+        color: white;
+        float: left;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+
+
+    }
+    .pagination span:hover:not(.current) {
+        background-color: #ddd;
+        border-radius: 5px;
+
+    }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/FruitsTask/src/Controller/FruitController.php'|file_link(0) }}">src/Controller/FruitController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/FruitsTask/templates/fruit/index.html.twig'|file_link(0) }}">templates/fruit/index.html.twig</a></code></li>
-    </ul>
+    <table class="table table-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Fruits</th>
+            <th scope="col">Family</th>
+            <th scope="col">Order</th>
+            <th scope="col">Add / Remove  Favorites</th>
+
+        </tr>
+        {% for fruit in fruits %}
+            <tr>
+                <td>{{ fruit.id }}</td>
+                <td>{{ fruit.name }}</td>
+                <td>{{ fruit.family }}</td>
+                <td>{{ fruit.getOrderName }}</td>
+                <td>
+                    {% if(fruit.getIsFavorite)%}
+                    <i onclick="updateFavorites({{ fruit.id }},1)" id="fill{{ fruit.id }}" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                            </svg>
+
+                        </i>
+                        <i onclick="updateFavorites({{ fruit.id }},2)" id="notFill{{ fruit.id }}" style="display: none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" >
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                            </svg>
+
+                        </i>
+                        {% else %}
+                            <i onclick="updateFavorites({{ fruit.id }},3)" id="fill{{ fruit.id }}" style="display: none" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+
+                            </i>
+                            <i onclick="updateFavorites({{ fruit.id }},4)" id="notFill{{ fruit.id }}" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                </svg>
+
+                            </i>
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination text-center" >
+        {{ knp_pagination_render(fruits) }}
+    </div>
 </div>
+
+    <script>
+        function updateFavorites(id,check) {
+
+
+            const data = {id: id}
+
+            let fill = 'none';
+            let not_fill = 'none';
+
+
+            // Send the AJAX request using fetch
+            fetch(`{{ url('add_favorite') }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server here
+
+                    if(data)
+                    {
+                        if(check % 2 === 0)
+                        {
+                            fill = "";
+                            not_fill ="none";
+                        }
+                        else {
+                            fill = "none";
+                            not_fill ="";
+                        }
+
+
+                        document.getElementById('fill'+id).style.display = fill;
+                        document.getElementById('notFill'+id).style.display = not_fill;
+
+
+                    }
+                })
+                .catch(error => {
+                    // Handle errors here
+                    console.log(error);
+                });
+        }
+    </script>
+
 {% endblock %}

@@ -9,5 +9,5 @@ add_favorite:
     controller: App\Controller\FruitController::addToFavorite
     methods: [POST]
 get_favorites:
-        path: /favorites
+        path: /favorite-fruits
         controller: App\Controller\FruitController::getFavorites
